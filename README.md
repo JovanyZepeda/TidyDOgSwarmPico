@@ -1,8 +1,5 @@
 # Raspberry Pico Project
-This repository contains an empty 'initial' project for Pi Pico using 
-- VS Code dev containers
-- openOCD and GDB-Multiarch for step-through debugging
-- tio for serial print statement reading from pricoprobe
+This repository will track the firmware development for the Raspberry Pico onboard the TidyDog. 
 
 ---
 ## Debugging Options
