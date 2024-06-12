@@ -1,0 +1,26 @@
+{
+    // Documentation for Cmake settings: 
+    // https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/README.md
+    "cmake.cmakePath": "/usr/bin/cmake",
+    "cmake.generator": "Unix Makefiles",
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": false,
+    "cmake.options.advanced": {
+        "build": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        },
+        "launch": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        },
+        "debug": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        }
+    },
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    }
+}
