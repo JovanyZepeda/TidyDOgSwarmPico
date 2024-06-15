@@ -7,6 +7,8 @@ project(${projname} C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_SSTANDARD 17)
 
+message("##### Buiding Project: ${projname}")
+
 # Set source and include directory variables
 set(source_dir "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(include_dir "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -22,12 +24,11 @@ file(GLOB_RECURSE src_files "${source_dir}/*.c")
 file(GLOB_RECURSE include_files "${include_dir}/*.h")
 
 # Confirm that the proper source and header files were found
-message("Source files: ${src_files}")
-message("Include files: ${include_files}")
+message("##### Source files: ${src_files}")
+message("##### Include files: ${include_files}")
 
 # Create the executable
 add_executable(${projname} "${src_files}")
-
 
 # Include the PICO Standard Library
 target_link_libraries(${projname} pico_stdlib)

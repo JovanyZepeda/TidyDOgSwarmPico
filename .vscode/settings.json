@@ -12,11 +12,11 @@
         },
         "launch": {
             "statusBarVisibility": "inherit",
-            "inheritDefault": "visible"
+            "inheritDefault": "hidden"
         },
         "debug": {
             "statusBarVisibility": "inherit",
-            "inheritDefault": "visible"
+            "inheritDefault": "hidden"
         }
     },
     "files.associations": {

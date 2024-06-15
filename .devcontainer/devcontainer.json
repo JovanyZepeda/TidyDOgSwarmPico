@@ -25,10 +25,10 @@
         "marus25.cortex-debug",
         "ms-vscode.cmake-tools",
         "twxs.cmake",
-        "eamodio.gitlens",
         "xaver.clang-format",
         "chris-hock.pioasm",
-        "ms-vscode.cpptools-extension-pack"
+        "ms-vscode.cpptools-extension-pack",
+        "cschlosser.doxdocgen"
       ]
     }
   }
