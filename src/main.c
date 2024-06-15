@@ -6,6 +6,7 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
 #include "app/extrafunc.h"
+#include "app/L298N.h"
 
 int
 main(void)
