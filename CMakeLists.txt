@@ -30,8 +30,11 @@ message("##### Include files: ${include_files}")
 # Create the executable
 add_executable(${projname} "${src_files}")
 
-# Include the PICO Standard Library
-target_link_libraries(${projname} pico_stdlib)
+# Include the PICO Standard Library and Hardware Libraries
+target_link_libraries(${projname} 
+    pico_stdlib  
+    hardware_pwm 
+    )
 
 # adjust to enable stdio via usb, or uart
 pico_enable_stdio_usb(${projname} 0)
