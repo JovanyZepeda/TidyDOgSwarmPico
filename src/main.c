@@ -27,16 +27,16 @@ main(void)
     myDriver._pinIN2 = L298N_IN2_PIN;
     myDriver._pinIN3 = L298N_IN3_PIN;
     myDriver._pinIN4 = L298N_IN4_PIN;
-    myDriver._pwmVal = 200;
+    myDriver._pwmVal = 4000;
 
     init(&myDriver);
 
     while (1) {
         printf("Blinking RN!\r\n");
-        led_ctrl(1);    // turn LED on
-        sleep_ms(1000);
-        led_ctrl(0);    // turn LED off
-        sleep_ms(1000);
+        // led_ctrl(1);    // turn LED on
+        // sleep_ms(1000);
+        // led_ctrl(0);    // turn LED off
+        // sleep_ms(1000);
 
         printf("FWD!\r\n");
         myDriver.move_forward(&myDriver);
@@ -46,6 +46,32 @@ main(void)
         sleep_ms(1000);
         printf("STOP!\r\n");
         myDriver.stop(&myDriver);
+
+        for(int i=3500; i<5999;i++ ){
+            myDriver.set_pwmVal(&myDriver, i);
+            myDriver.move_forward(&myDriver);
+            sleep_ms(10);
+        } 
+        
+        for(int i=5999; i>3500;i-- ){
+            myDriver.set_pwmVal(&myDriver, i);
+            myDriver.move_forward(&myDriver);
+            sleep_ms(10);
+        } 
+
+        for(int i=3500; i<5999;i++ ){
+            myDriver.set_pwmVal(&myDriver, i);
+            myDriver.move_reverse(&myDriver);
+            sleep_ms(10);
+        } 
+        
+        for(int i=5999; i>3500;i-- ){
+            myDriver.set_pwmVal(&myDriver, i);
+            myDriver.move_reverse(&myDriver);
+            sleep_ms(10);
+        } 
+
+
 
     }
 }

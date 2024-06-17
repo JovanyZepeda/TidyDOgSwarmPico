@@ -20,13 +20,13 @@ struct L298N_MotorDriver* create_motor_driver(void)
 
 /*setters and getters*/
 
-void set_pwmVal(struct L298N_MotorDriver* self, uint8_t new_pwmVal)
+void set_pwmVal(struct L298N_MotorDriver* self, uint16_t new_pwmVal)
 {
     self->_pwmVal = new_pwmVal;
 }
 
 
-uint8_t get_pwmVal(struct L298N_MotorDriver* self)
+uint16_t get_pwmVal(struct L298N_MotorDriver* self)
 {
     return self->_pwmVal;
 }
@@ -109,11 +109,16 @@ void init(struct L298N_MotorDriver* self)
     gpio_set_function(self->_pinIN4, GPIO_FUNC_SIO);
 
     // Setup the PWM pins for motor control
+    pwm_config pwm_cfg = pwm_get_default_config();
+
     uint sliceNumA = pwm_gpio_to_slice_num(self->_pinEnableA);
     uint sliceNumB = pwm_gpio_to_slice_num(self->_pinEnableB);
 
-    pwm_set_wrap(sliceNumA, 254);
-    pwm_set_wrap(sliceNumB, 254);
+    pwm_init(sliceNumA,&pwm_cfg, true);
+    pwm_init(sliceNumB,&pwm_cfg, true);
+
+    pwm_set_wrap(sliceNumA, 6000);
+    pwm_set_wrap(sliceNumB, 6000);
 
     pwm_set_gpio_level(self->_pinEnableA, 0);
     pwm_set_gpio_level(self->_pinEnableB, 0);
@@ -134,6 +139,8 @@ void init(struct L298N_MotorDriver* self)
     gpio_put(self->_pinIN4, false);
 
     /*init the funciton pointers*/
+    self->set_direction = set_direction;
+    self->set_pwmVal = set_pwmVal;
     self->move_forward = move_forward;
     self->move_reverse = move_reverse;
     self->stop = stop;

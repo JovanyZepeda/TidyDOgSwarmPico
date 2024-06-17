@@ -9,7 +9,7 @@ typedef enum {
 
 struct L298N_MotorDriver{
     /*public variabless*/
-    uint8_t _pwmVal;
+    uint16_t _pwmVal;
     L298N_Direction _direction;
     bool isMoving;
 
@@ -29,8 +29,8 @@ struct L298N_MotorDriver{
     void (*run)(struct L298N_MotorDriver*);
 
     /*setters and getters*/
-    void (*set_pwmVal)(struct L298N_MotorDriver*, uint8_t new_pwmVal);
-    uint8_t (*get_pwmVal)(struct L298N_MotorDriver*);
+    void (*set_pwmVal)(struct L298N_MotorDriver*, uint16_t new_pwmVal);
+    uint16_t (*get_pwmVal)(struct L298N_MotorDriver*);
     L298N_Direction (*get_direction)(struct L298N_MotorDriver*);
     void (*set_direction)(struct L298N_MotorDriver*, L298N_Direction new_direction);
 
