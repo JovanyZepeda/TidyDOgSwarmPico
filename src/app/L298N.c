@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "hardware/pwm.h"
 #include "app/L298N.h"
+#include "common/helper_functions.h"
 
 
 /*constructor*/
@@ -22,7 +23,7 @@ struct L298N_MotorDriver* create_motor_driver(void)
 
 void set_pwmVal(struct L298N_MotorDriver* self, uint16_t new_pwmVal)
 {
-    self->_pwmVal = new_pwmVal;
+    self->_pwmVal = map(new_pwmVal,0, 255,L298N_PWM_MININUM_TO_MOVE, L298N_PWM_COUNTER_MAX_VALUE);
 }
 
 
@@ -41,9 +42,20 @@ void set_direction(struct L298N_MotorDriver* self, L298N_Direction new_direction
     self->_direction=new_direction;
 }
 
+void set_isMoving(struct L298N_MotorDriver* self, bool isMoving)
+{
+    self->_isMoving = isMoving;
+}
+
+bool get_isMoveing(struct L298N_MotorDriver* self)
+{
+    return self->_isMoving;
+}
+
+
+
 
 /* Movement Functions */
-
 
 
  void move_forward(struct L298N_MotorDriver* self)
@@ -58,7 +70,6 @@ void set_direction(struct L298N_MotorDriver* self, L298N_Direction new_direction
     
     gpio_put(self->_pinIN3, true);
     gpio_put(self->_pinIN4, false);
-
 
 }
 
@@ -91,6 +102,26 @@ void set_direction(struct L298N_MotorDriver* self, L298N_Direction new_direction
  void run(struct L298N_MotorDriver* self)
 {
 
+    if(self->_isMoving){
+        switch(self->_direction)
+        {
+            case L298N_DIRECTION_FOWARD: 
+                move_forward(self);
+                break;
+            case L298N_DIRECTION_FREVERSE: 
+                move_reverse(self);
+                break;
+            case L298N_DIRECTION_STOP: 
+                stop(self);
+                break;
+            default:
+                stop(self);
+                break;
+        }
+
+    } else {
+        stop(self);
+    }
 }
 
 /**
@@ -117,8 +148,8 @@ void init(struct L298N_MotorDriver* self)
     pwm_init(sliceNumA,&pwm_cfg, true);
     pwm_init(sliceNumB,&pwm_cfg, true);
 
-    pwm_set_wrap(sliceNumA, 6000);
-    pwm_set_wrap(sliceNumB, 6000);
+    pwm_set_wrap(sliceNumA, L298N_PWM_COUNTER_MAX_VALUE);
+    pwm_set_wrap(sliceNumB, L298N_PWM_COUNTER_MAX_VALUE);
 
     pwm_set_gpio_level(self->_pinEnableA, 0);
     pwm_set_gpio_level(self->_pinEnableB, 0);
@@ -141,6 +172,10 @@ void init(struct L298N_MotorDriver* self)
     /*init the funciton pointers*/
     self->set_direction = set_direction;
     self->set_pwmVal = set_pwmVal;
+    self->get_direction = get_direction;
+    self->get_pwmVal = get_pwmVal;
+    self->get_isMoveing = get_isMoveing;
+
     self->move_forward = move_forward;
     self->move_reverse = move_reverse;
     self->stop = stop;

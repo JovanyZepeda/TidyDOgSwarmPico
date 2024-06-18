@@ -1,6 +1,11 @@
 #ifndef L298N_HEADER
 #define L298N_HEADER
 
+
+#define L298N_PWM_COUNTER_MAX_VALUE 6000 //due to the 16 bit counter
+#define L298N_PWM_MININUM_TO_MOVE 3200 // PWM counter value needed to move motors
+
+
 typedef enum {
     L298N_DIRECTION_FOWARD = 0,
     L298N_DIRECTION_FREVERSE = 1,
@@ -11,7 +16,7 @@ struct L298N_MotorDriver{
     /*public variabless*/
     uint16_t _pwmVal;
     L298N_Direction _direction;
-    bool isMoving;
+    bool _isMoving;
 
     uint8_t _pinEnableA;
     uint8_t _pinEnableB;
@@ -33,6 +38,8 @@ struct L298N_MotorDriver{
     uint16_t (*get_pwmVal)(struct L298N_MotorDriver*);
     L298N_Direction (*get_direction)(struct L298N_MotorDriver*);
     void (*set_direction)(struct L298N_MotorDriver*, L298N_Direction new_direction);
+    bool (*get_isMoveing)(struct L298N_MotorDriver* self);
+    void (*set_isMoving)(struct L298N_MotorDriver* self, bool isMoving);
 
 };
 

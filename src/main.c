@@ -27,7 +27,7 @@ main(void)
     myDriver._pinIN2 = L298N_IN2_PIN;
     myDriver._pinIN3 = L298N_IN3_PIN;
     myDriver._pinIN4 = L298N_IN4_PIN;
-    myDriver._pwmVal = 4000;
+    myDriver._pwmVal = L298N_PWM_MININUM_TO_MOVE;
 
     init(&myDriver);
 
@@ -47,25 +47,25 @@ main(void)
         printf("STOP!\r\n");
         myDriver.stop(&myDriver);
 
-        for(int i=3500; i<5999;i++ ){
+        for(uint16_t i=0; i<255;i+=1 ){
             myDriver.set_pwmVal(&myDriver, i);
             myDriver.move_forward(&myDriver);
             sleep_ms(10);
         } 
         
-        for(int i=5999; i>3500;i-- ){
+        for(uint16_t i=255; i>0;i-=1  ){
             myDriver.set_pwmVal(&myDriver, i);
             myDriver.move_forward(&myDriver);
             sleep_ms(10);
         } 
 
-        for(int i=3500; i<5999;i++ ){
+        for(uint16_t i=0; i<255;i+=1  ){
             myDriver.set_pwmVal(&myDriver, i);
             myDriver.move_reverse(&myDriver);
             sleep_ms(10);
         } 
         
-        for(int i=5999; i>3500;i-- ){
+        for(uint16_t i=255; i>0;i-=1 ){
             myDriver.set_pwmVal(&myDriver, i);
             myDriver.move_reverse(&myDriver);
             sleep_ms(10);
