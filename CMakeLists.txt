@@ -7,7 +7,10 @@ project(${projname} C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_SSTANDARD 17)
 
-message("##### Buiding Project: ${projname}")
+# Create variable to determine target group -> by default set to production
+set(TARGET_GROUP production CACHE STRING "Group to build")
+
+message("##### Setting up Project: ${projname}")
 
 # Set source and include directory variables
 set(source_dir "${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -27,19 +30,56 @@ file(GLOB_RECURSE include_files "${include_dir}/*.h")
 message("##### Source files: ${src_files}")
 message("##### Include files: ${include_files}")
 
-# Create the executable
-add_executable(${projname} "${src_files}")
 
-# Include the PICO Standard Library and Hardware Libraries
-target_link_libraries(${projname} 
-    pico_stdlib  
-    hardware_pwm 
-    )
+if( TARGET_GROUP STREQUAL production )
 
-# adjust to enable stdio via usb, or uart
-pico_enable_stdio_usb(${projname} 0)
-pico_enable_stdio_uart(${projname} 1)
+    message("##### Buiding Project: ${TARGET_GROUP}")
 
-# create map/bin/hex/uf2 file in addition to ELF.
-pico_add_extra_outputs(${projname})
+    # Create the executable
+    add_executable(${projname} "${src_files}")
+
+    # Include the PICO Standard Library and Hardware Libraries
+    target_link_libraries(${projname} 
+        pico_stdlib  
+        hardware_pwm 
+        )
+
+    # adjust to enable stdio via usb, or uart
+    pico_enable_stdio_usb(${projname} 0)
+    pico_enable_stdio_uart(${projname} 1)
+
+    # create map/bin/hex/uf2 file in addition to ELF.
+    pico_add_extra_outputs(${projname})
+
+
+elseif(TARGET_GROUP STREQUAL test)
+    message("##### Buiding Project: test")
+
+    include(CTest)
+
+    add_subdirectory(external)
+    add_subdirectory(test)
+
+else()
+    message(FATAL_ERROR "Given TARGET_GROUP unknown") 
+
+endif()
+
+
+
+# # Create the executable
+# add_executable(${projname} "${src_files}")
+
+# # Include the PICO Standard Library and Hardware Libraries
+# target_link_libraries(${projname} 
+#     pico_stdlib  
+#     hardware_pwm 
+#     )
+
+# # adjust to enable stdio via usb, or uart
+# pico_enable_stdio_usb(${projname} 0)
+# pico_enable_stdio_uart(${projname} 1)
+
+# # create map/bin/hex/uf2 file in addition to ELF.
+# pico_add_extra_outputs(${projname})
 

@@ -3,7 +3,7 @@
     "configurePresets": [
         {
             "name": "linux-default",
-            "displayName": "Pico CMake Preset",
+            "displayName": "Pico CMake Build Application Preset",
             "description": "Sets Unix Makefiles generator, build and install directory",
             "generator": "Unix Makefiles",
             "binaryDir": "${sourceDir}/build",
@@ -14,6 +14,13 @@
             "environment": {
                 "PICO_SDK_PATH": "/usr/share/pico_sdk"
             }
+        },
+        {
+            "name": "linux-test-default",
+            "displayName": "Pico CMake Build Test Preset",
+            "description": "Sets Unix Makefiles generator, build and run tests",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/test/bin"
         }
     ]
 }
