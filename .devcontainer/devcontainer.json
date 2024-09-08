@@ -28,7 +28,8 @@
         "xaver.clang-format",
         "chris-hock.pioasm",
         "ms-vscode.cpptools-extension-pack",
-        "cschlosser.doxdocgen"
+        "cschlosser.doxdocgen",
+        "mhutchie.git-graph"
       ]
     }
   }
