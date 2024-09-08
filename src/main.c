@@ -12,7 +12,7 @@
 
 int
 main(void)
-{
+        {
     stdio_init_all();
     //details: https://github.com/raspberrypi/pico-sdk/issues/1622
     timer_hw->dbgpause = 0; // Prevent debugging from stopping timer
@@ -34,10 +34,10 @@ main(void)
 
     while (1) {
         printf("Blinking RN!\r\n");
-        // led_ctrl(1);    // turn LED on
-        // sleep_ms(1000);
-        // led_ctrl(0);    // turn LED off
-        // sleep_ms(1000);
+        led_ctrl(1);    // turn LED on
+        sleep_ms(1000);
+        led_ctrl(0);    // turn LED off
+        sleep_ms(1000);
 
         printf("FWD!\r\n");
         myDriver.move_forward(&myDriver);
