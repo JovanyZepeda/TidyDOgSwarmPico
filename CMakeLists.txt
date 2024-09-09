@@ -65,7 +65,7 @@ if( TARGET_GROUP STREQUAL production )
 elseif(TARGET_GROUP STREQUAL test)
     message("##### Buiding Project: test")
 
-    include(CTest)
+    # include(CTest)
 
     add_subdirectory(external)
     add_subdirectory(test)
@@ -74,22 +74,4 @@ else()
     message(FATAL_ERROR "Given TARGET_GROUP unknown") 
 
 endif()
-
-
-
-# # Create the executable
-# add_executable(${projname} "${src_files}")
-
-# # Include the PICO Standard Library and Hardware Libraries
-# target_link_libraries(${projname} 
-#     pico_stdlib  
-#     hardware_pwm 
-#     )
-
-# # adjust to enable stdio via usb, or uart
-# pico_enable_stdio_usb(${projname} 0)
-# pico_enable_stdio_uart(${projname} 1)
-
-# # create map/bin/hex/uf2 file in addition to ELF.
-# pico_add_extra_outputs(${projname})
 
