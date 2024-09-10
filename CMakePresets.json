@@ -9,7 +9,8 @@
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/",
+                "TARGET_GROUP": "production"
             },
             "environment": {
                 "PICO_SDK_PATH": "/usr/share/pico_sdk"
@@ -20,7 +21,10 @@
             "displayName": "Pico CMake Build Test Preset",
             "description": "Sets Unix Makefiles generator, build and run tests",
             "generator": "Unix Makefiles",
-            "binaryDir": "${sourceDir}/test/bin"
+            "binaryDir": "${sourceDir}/test/bin",
+            "cacheVariables": {
+                "TARGET_GROUP": "test"
+            }
         }
     ]
 }

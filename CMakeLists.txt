@@ -11,6 +11,7 @@ set(CMAKE_CXX_SSTANDARD 17)
 set(TARGET_GROUP production CACHE STRING "Group to build")
 
 message("##### Setting up Project: ${projname}")
+message("##### Setting up Target Group: ${TARGET_GROUP}")
 
 # Set source and include directory variables
 set(source_dir "${CMAKE_SOURCE_DIR}/src")
@@ -65,7 +66,7 @@ if( TARGET_GROUP STREQUAL production )
 elseif(TARGET_GROUP STREQUAL test)
     message("##### Buiding Project: test")
 
-    # include(CTest)
+    include(CTest)
 
     add_subdirectory(external)
     add_subdirectory(test)

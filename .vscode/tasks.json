@@ -16,27 +16,6 @@
             }
         },
         {
-            "type": "cmake",
-            "label": "CMake: build",
-            "command": "build",
-            "targets": [
-                "raspberry_pico_app"
-            ],
-            "preset": "${command:cmake.activeBuildPresetName}",
-            "group": "build",
-            "problemMatcher": [],
-            "detail": "CMake template build task"
-        },
-        {
-            "type": "cmake",
-            "label": "CMake: test",
-            "command": "test",
-            "preset": "${command:cmake.}",
-            "group": "test",
-            "problemMatcher": [],
-            "detail": "CMake test task"
-        },
-        {
             "type": "cppbuild",
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",
