@@ -1,16 +1,8 @@
-cmake_minimum_required(VERSION 3.12)
-include(pico_sdk_import.cmake)
-
-# Set project name and high level config
-set(projname "raspberry_pico_app")
-project(${projname} C CXX ASM)
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_SSTANDARD 17)
+cmake_minimum_required(VERSION 3.24)
 
 # Create variable to determine target group -> by default set to production
-set(TARGET_GROUP production CACHE STRING "Group to build")
+# set(TARGET_GROUP production CACHE STRING "Group to build")
 
-message("##### Setting up Project: ${projname}")
 message("##### Setting up Target Group: ${TARGET_GROUP}")
 
 # Set source and include directory variables
@@ -26,12 +18,6 @@ set(include_bsp_dir "${include_dir}/bsp")
 set(include_common_dir "${include_dir}/common")
 set(include_drivers_dir "${include_dir}/drivers")
 
-# Initialize the pick sdk
-include(pico_sdk_import.cmake)
-pico_sdk_init()
-
-# Set include directories
-include_directories(${include_dir})
 
 # Globbing files before linking 
 file(GLOB_RECURSE src_files "${source_dir}/*.c")
@@ -52,24 +38,59 @@ message("##### Source files: ${src_files}")
 message("##### Include files: ${include_files}")
 
 
+if(BUILD_FOR_PICO STREQUAL "ON")
+    message("##### Build for PICO! -> Init Pico SDK")
+    # Initialize the pick sdk
+    include(pico_sdk_import.cmake)
+    pico_sdk_init()
+else()
+    message("##### Do NOT Build for PICO! -> Do NOT Init Pico SDK")  
+endif()
+
 if( TARGET_GROUP STREQUAL production )
 
+
     message("##### Buiding Project: ${TARGET_GROUP}")
+    # Set project name and high level config
+    set(projname "raspberry_pico_app")
+    message("##### Setting up Project: ${projname}")
+    project(${projname} C CXX ASM)
 
 
+
+
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 11)
+
+    # Set include directories
+    include_directories(${include_dir})
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/Unity/src/)
+
+
+
+    message("##### C Compiler used: ${CMAKE_C_COMPILER}")
 
     add_subdirectory(src)
 
-    
-
-
 elseif(TARGET_GROUP STREQUAL test)
     message("##### Buiding Project: test")
+
+    # Set project name and high level config
+    set(projname "unit_tests")
+    message("##### Setting up Project: ${projname}")
+    project(${projname} C ASM)
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_C_COMPILER "gcc")
+
+    # Set include directories
+    include_directories(${include_dir})
 
     include(CTest)
 
     add_subdirectory(external)
     add_subdirectory(test)
+
+    message("##### C Compiler used: ${CMAKE_C_COMPILER}")
 
 else()
     message(FATAL_ERROR "Given TARGET_GROUP unknown") 

@@ -2,9 +2,12 @@
     // Documentation for Cmake settings: 
     // https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/README.md
     "cmake.cmakePath": "/usr/bin/cmake",
-    "cmake.generator": "Unix Makefiles",
+    // "cmake.generator": "Unix Makefiles",
     "cmake.useCMakePresets": "always",
-    "cmake.configureOnOpen": false,
+    "cmake.configureOnOpen": true,
+    "cmake.configureArgs": [
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    ],
     "cmake.options.advanced": {
         "build": {
             "statusBarVisibility": "inherit",
