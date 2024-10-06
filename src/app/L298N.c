@@ -6,48 +6,54 @@
 
 
 /*constructor*/
-
-
-
-struct L298N_MotorDriver* create_motor_driver(void)
+struct L298N_MotorDriver L298N_create_motor_driver(void)
 {
-    struct L298N_MotorDriver* motorDriver = malloc(sizeof(struct L298N_MotorDriver));
+    struct L298N_MotorDriver motorDriver;
 
-    motorDriver->_direction = L298N_DIRECTION_STOP;
-    motorDriver->_pwmVal = 0;
+    // Initial conditions
+    motorDriver._direction = L298N_DIRECTION_STOP;
+    motorDriver._pwmVal = 0;
+
+
+    // Assign function pointers
+    motorDriver.set_direction = set_direction;
+    motorDriver.set_pwmVal = set_pwmVal;
+    motorDriver.get_direction = get_direction;
+    motorDriver.get_pwmVal = get_pwmVal;
+    motorDriver.get_isMoveing = get_isMoveing;
 
     return (motorDriver);
 }
 
 /*setters and getters*/
 
-void set_pwmVal(struct L298N_MotorDriver* self, uint16_t new_pwmVal)
+static void set_pwmVal(struct L298N_MotorDriver* self, uint16_t new_pwmVal)
 {
     self->_pwmVal = map(new_pwmVal,0, 255,L298N_PWM_MININUM_TO_MOVE, L298N_PWM_COUNTER_MAX_VALUE);
 }
 
 
-uint16_t get_pwmVal(struct L298N_MotorDriver* self)
+static uint16_t get_pwmVal(struct L298N_MotorDriver* self)
 {
     return self->_pwmVal;
 }
 
-L298N_Direction get_direction(struct L298N_MotorDriver* self)
+static L298N_Direction get_direction(struct L298N_MotorDriver* self)
 {
     return self->_direction;
 }
 
-void set_direction(struct L298N_MotorDriver* self, L298N_Direction new_direction)
+static void set_direction(struct L298N_MotorDriver* self, L298N_Direction new_direction)
 {
     self->_direction=new_direction;
 }
 
-void set_isMoving(struct L298N_MotorDriver* self, bool isMoving)
+static void set_isMoving(struct L298N_MotorDriver* self, bool isMoving)
 {
     self->_isMoving = isMoving;
 }
 
-bool get_isMoveing(struct L298N_MotorDriver* self)
+static bool get_isMoveing(struct L298N_MotorDriver* self)
 {
     return self->_isMoving;
 }
@@ -58,7 +64,7 @@ bool get_isMoveing(struct L298N_MotorDriver* self)
 /* Movement Functions */
 
 
- void move_forward(struct L298N_MotorDriver* self)
+static void move_forward(struct L298N_MotorDriver* self)
 {
     //Set the speed according to struct
     pwm_set_gpio_level(self->_pinEnableA,self->_pwmVal);
@@ -73,7 +79,7 @@ bool get_isMoveing(struct L298N_MotorDriver* self)
 
 }
 
- void move_reverse(struct L298N_MotorDriver* self)
+static void move_reverse(struct L298N_MotorDriver* self)
 {
     //Set the speed according to struct
     pwm_set_gpio_level(self->_pinEnableA,self->_pwmVal);
@@ -88,7 +94,7 @@ bool get_isMoveing(struct L298N_MotorDriver* self)
 
 }
 
- void stop(struct L298N_MotorDriver* self)
+static void stop(struct L298N_MotorDriver* self)
 {
     //command the h-bridge
     gpio_put(self->_pinIN1, false);
@@ -99,7 +105,7 @@ bool get_isMoveing(struct L298N_MotorDriver* self)
 
 }
 
- void run(struct L298N_MotorDriver* self)
+static void run(struct L298N_MotorDriver* self)
 {
 
     if(self->_isMoving){
@@ -129,8 +135,21 @@ bool get_isMoveing(struct L298N_MotorDriver* self)
  * 
  * @param self 
  */
-void init(struct L298N_MotorDriver* self)
+static void init_Struct(struct L298N_MotorDriver* self)
 {
+    /*init the funciton pointers*/
+    self->set_direction = set_direction;
+    self->set_pwmVal = set_pwmVal;
+    self->get_direction = get_direction;
+    self->get_pwmVal = get_pwmVal;
+    self->get_isMoveing = get_isMoveing;
+
+    self->move_forward = move_forward;
+    self->move_reverse = move_reverse;
+    self->stop = stop;
+}
+
+void init_driver(struct L298N_MotorDriver* self){
     // Set which pins are PWM or Software Controlled (SIO)
     gpio_set_function(self->_pinEnableA, GPIO_FUNC_PWM);
     gpio_set_function(self->_pinEnableB, GPIO_FUNC_PWM);
@@ -168,15 +187,4 @@ void init(struct L298N_MotorDriver* self)
     gpio_put(self->_pinIN2, false);
     gpio_put(self->_pinIN3, false);
     gpio_put(self->_pinIN4, false);
-
-    /*init the funciton pointers*/
-    self->set_direction = set_direction;
-    self->set_pwmVal = set_pwmVal;
-    self->get_direction = get_direction;
-    self->get_pwmVal = get_pwmVal;
-    self->get_isMoveing = get_isMoveing;
-
-    self->move_forward = move_forward;
-    self->move_reverse = move_reverse;
-    self->stop = stop;
 }

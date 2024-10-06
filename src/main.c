@@ -21,7 +21,7 @@ main(void)
 
 
     /*Testing L298N*/
-    struct L298N_MotorDriver myDriver = *create_motor_driver();
+    struct L298N_MotorDriver myDriver = *L298N_create_motor_driver();
     myDriver._pinEnableA = L298N_ENA_PIN;
     myDriver._pinEnableB = L298N_ENB_PIN;
     myDriver._pinIN1 = L298N_IN1_PIN;
